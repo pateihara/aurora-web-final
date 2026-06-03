@@ -1,269 +1,228 @@
-//prisma/seed.ts
-import { PrismaClient } from "../src/generated/prisma/client";
-import { PrismaPg } from "@prisma/adapter-pg";
-import bcrypt from "bcryptjs";
+// prisma/seed.ts
+import "dotenv/config";
 
-const adapter = new PrismaPg({
-  connectionString: process.env.DATABASE_URL,
+import bcrypt from "bcryptjs";
+import { Pool } from "pg";
+import { PrismaPg } from "@prisma/adapter-pg";
+import { PrismaClient } from "../src/generated/prisma/client";
+
+const connectionString = process.env.DATABASE_URL;
+
+if (!connectionString) {
+  throw new Error("DATABASE_URL não encontrada no arquivo .env.");
+}
+
+const pool = new Pool({
+  connectionString,
 });
 
+const adapter = new PrismaPg(pool);
 const prisma = new PrismaClient({
   adapter,
 });
 
 async function main() {
-  console.log("Limpando banco...");
+  const passwordHash = await bcrypt.hash("123456", 10);
 
-  await prisma.chargingHistory.deleteMany();
-  await prisma.favorite.deleteMany();
-  await prisma.review.deleteMany();
-  await prisma.charger.deleteMany();
-  await prisma.vehicle.deleteMany();
-  await prisma.station.deleteMany();
-  await prisma.user.deleteMany();
-
-  console.log("Criando usuários...");
-
-  const adminPassword = await bcrypt.hash("admin123", 10);
-  const driverPassword = await bcrypt.hash("123456", 10);
-
-  const admin = await prisma.user.create({
-    data: {
-      name: "Flui Admin",
+  const admin = await prisma.user.upsert({
+    where: {
       email: "admin@flui.com",
-      password: adminPassword,
+    },
+    update: {
+      name: "Admin Flui",
+      role: "ADMIN",
+    },
+    create: {
+      name: "Admin Flui",
+      email: "admin@flui.com",
+      password: passwordHash,
       role: "ADMIN",
     },
   });
 
-  const driver = await prisma.user.create({
-    data: {
-      name: "Ana Silva",
-      email: "ana@aurora.com",
-      password: driverPassword,
+  const driver = await prisma.user.upsert({
+    where: {
+      email: "motorista@aurora.com",
+    },
+    update: {
+      name: "Motorista Aurora",
       role: "DRIVER",
-      vehicles: {
-        create: {
-          model: "Tesla Model 3",
-          connector: "CCS2",
-          rangeKm: 350,
-          maxPowerKw: 170,
-        },
-      },
+      sparks: 0,
+      reviewsCount: 0,
+    },
+    create: {
+      name: "Motorista Aurora",
+      email: "motorista@aurora.com",
+      password: passwordHash,
+      role: "DRIVER",
+      sparks: 0,
+      reviewsCount: 0,
     },
   });
 
-  console.log("Criando pontos de recarga...");
-
-  const fluiBatel = await prisma.station.create({
-    data: {
-      name: "Flui Batel",
-      address: "Av. do Batel, 1230",
-      city: "Curitiba",
-      state: "PR",
-      latitude: -25.4411,
-      longitude: -49.2877,
-      isOpen24h: true,
-      amenities: ["Café", "Wi-Fi", "Estacionamento", "Shopping"],
-      chargers: {
-        create: [
-          {
-            label: "Ponto 1",
-            connector: "CCS2",
-            powerKw: 150,
-            status: "AVAILABLE",
-          },
-          {
-            label: "Ponto 2",
-            connector: "CCS2",
-            powerKw: 150,
-            status: "AVAILABLE",
-          },
-          {
-            label: "Ponto 3",
-            connector: "CHADEMO",
-            powerKw: 50,
-            status: "OCCUPIED",
-          },
-          {
-            label: "Ponto 4",
-            connector: "TYPE2",
-            powerKw: 22,
-            status: "AVAILABLE",
-          },
-        ],
-      },
+  await prisma.vehicle.upsert({
+    where: {
+      id: "seed-vehicle-tesla",
     },
-  });
-
-  const fluiAguaVerde = await prisma.station.create({
-    data: {
-      name: "Flui Água Verde",
-      address: "R. Dep. Westphalen, 400",
-      city: "Curitiba",
-      state: "PR",
-      latitude: -25.4513,
-      longitude: -49.2766,
-      isOpen24h: true,
-      amenities: ["Wi-Fi", "Estacionamento", "Banheiro"],
-      chargers: {
-        create: [
-          {
-            label: "Ponto 1",
-            connector: "CCS2",
-            powerKw: 150,
-            status: "AVAILABLE",
-          },
-          {
-            label: "Ponto 2",
-            connector: "CCS2",
-            powerKw: 150,
-            status: "AVAILABLE",
-          },
-          {
-            label: "Ponto 3",
-            connector: "TYPE2",
-            powerKw: 22,
-            status: "AVAILABLE",
-          },
-        ],
-      },
-    },
-  });
-
-  const fluiCentro = await prisma.station.create({
-    data: {
-      name: "Flui Centro",
-      address: "R. XV de Novembro, 700",
-      city: "Curitiba",
-      state: "PR",
-      latitude: -25.4297,
-      longitude: -49.2719,
-      isOpen24h: false,
-      amenities: ["Café", "Shopping"],
-      chargers: {
-        create: [
-          {
-            label: "Ponto 1",
-            connector: "CHADEMO",
-            powerKw: 50,
-            status: "OCCUPIED",
-          },
-          {
-            label: "Ponto 2",
-            connector: "CCS2",
-            powerKw: 100,
-            status: "AVAILABLE",
-          },
-        ],
-      },
-    },
-  });
-
-  await prisma.station.create({
-  data: {
-    name: "Flui Portão",
-    address: "Av. República Argentina, 3300",
-    city: "Curitiba",
-    state: "PR",
-    latitude: -25.4767,
-    longitude: -49.2929,
-    isOpen24h: true,
-    amenities: ["Estacionamento"],
-    chargers: {
-      create: [
-        {
-          label: "Ponto 1",
-          connector: "CCS2",
-          powerKw: 150,
-          status: "OFFLINE",
-        },
-        {
-          label: "Ponto 2",
-          connector: "CCS2",
-          powerKw: 150,
-          status: "OFFLINE",
-        },
-      ],
-    },
-  },
-});
-
-  console.log("Criando avaliações...");
-
-  await prisma.review.createMany({
-    data: [
-      {
-        rating: 5,
-        comment: "Ponto impecável. Carregou meu Model 3 em menos de 20 minutos.",
-        availabilityScore: 5,
-        qualityScore: 5,
-        amenitiesScore: 4,
-        signageScore: 5,
-        userId: driver.id,
-        stationId: fluiBatel.id,
-      },
-      {
-        rating: 4,
-        comment: "Boa localização e carregadores rápidos.",
-        availabilityScore: 4,
-        qualityScore: 5,
-        amenitiesScore: 4,
-        signageScore: 4,
-        userId: driver.id,
-        stationId: fluiAguaVerde.id,
-      },
-      {
-        rating: 3,
-        comment: "Um dos pontos estava ocupado e a sinalização poderia melhorar.",
-        availabilityScore: 3,
-        qualityScore: 3,
-        amenitiesScore: 4,
-        signageScore: 2,
-        userId: driver.id,
-        stationId: fluiCentro.id,
-      },
-    ],
-  });
-
-  console.log("Criando favoritos e histórico...");
-
-  await prisma.favorite.create({
-    data: {
+    update: {
+      nickname: "Meu Tesla",
+      model: "Tesla Model 3",
+      plate: "ABC1D23",
+      type: "EV",
+      connector: "CCS2",
+      rangeKm: 350,
+      maxPowerKw: 170,
+      currentBatteryPercent: 80,
+      fuelBackup: false,
+      isActive: true,
       userId: driver.id,
-      stationId: fluiBatel.id,
+    },
+    create: {
+      id: "seed-vehicle-tesla",
+      nickname: "Meu Tesla",
+      model: "Tesla Model 3",
+      plate: "ABC1D23",
+      type: "EV",
+      connector: "CCS2",
+      rangeKm: 350,
+      maxPowerKw: 170,
+      currentBatteryPercent: 80,
+      fuelBackup: false,
+      isActive: true,
+      userId: driver.id,
     },
   });
 
-  await prisma.chargingHistory.createMany({
-    data: [
-      {
-        userId: driver.id,
-        stationId: fluiBatel.id,
-        kwh: 32,
-        minutes: 22,
-        cost: 48.9,
-      },
-      {
-        userId: driver.id,
-        stationId: fluiAguaVerde.id,
-        kwh: 18,
-        minutes: 14,
-        cost: 28.5,
-      },
-    ],
+  const stationSp = await prisma.station.upsert({
+    where: {
+      id: "seed-station-sao-paulo",
+    },
+    update: {
+      name: "Flui São Paulo",
+      address: "Avenida Santo Amaro, 1234",
+      city: "São Paulo",
+      state: "SP",
+      latitude: -23.5995,
+      longitude: -46.6826,
+      isOpen24h: true,
+      amenities: ["Café", "Banheiro", "Wi-Fi"],
+    },
+    create: {
+      id: "seed-station-sao-paulo",
+      name: "Flui São Paulo",
+      address: "Avenida Santo Amaro, 1234",
+      city: "São Paulo",
+      state: "SP",
+      latitude: -23.5995,
+      longitude: -46.6826,
+      isOpen24h: true,
+      amenities: ["Café", "Banheiro", "Wi-Fi"],
+    },
   });
 
-  console.log("Seed finalizado!");
-  console.log("Admin:", admin.email, "senha: admin123");
-  console.log("Motorista:", driver.email, "senha: 123456");
+  const stationCuritiba = await prisma.station.upsert({
+    where: {
+      id: "seed-station-curitiba",
+    },
+    update: {
+      name: "Flui Curitiba",
+      address: "Avenida Sete de Setembro, 2775",
+      city: "Curitiba",
+      state: "PR",
+      latitude: -25.4429,
+      longitude: -49.2769,
+      isOpen24h: true,
+      amenities: ["Shopping", "Restaurante", "Banheiro"],
+    },
+    create: {
+      id: "seed-station-curitiba",
+      name: "Flui Curitiba",
+      address: "Avenida Sete de Setembro, 2775",
+      city: "Curitiba",
+      state: "PR",
+      latitude: -25.4429,
+      longitude: -49.2769,
+      isOpen24h: true,
+      amenities: ["Shopping", "Restaurante", "Banheiro"],
+    },
+  });
+
+  await prisma.charger.upsert({
+    where: {
+      id: "seed-charger-sp-ccs2",
+    },
+    update: {
+      label: "Terminal 01",
+      connector: "CCS2",
+      powerKw: 150,
+      status: "AVAILABLE",
+      stationId: stationSp.id,
+    },
+    create: {
+      id: "seed-charger-sp-ccs2",
+      label: "Terminal 01",
+      connector: "CCS2",
+      powerKw: 150,
+      status: "AVAILABLE",
+      stationId: stationSp.id,
+    },
+  });
+
+  await prisma.charger.upsert({
+    where: {
+      id: "seed-charger-sp-type2",
+    },
+    update: {
+      label: "Terminal 02",
+      connector: "TYPE2",
+      powerKw: 22,
+      status: "AVAILABLE",
+      stationId: stationSp.id,
+    },
+    create: {
+      id: "seed-charger-sp-type2",
+      label: "Terminal 02",
+      connector: "TYPE2",
+      powerKw: 22,
+      status: "AVAILABLE",
+      stationId: stationSp.id,
+    },
+  });
+
+  await prisma.charger.upsert({
+    where: {
+      id: "seed-charger-curitiba-ccs2",
+    },
+    update: {
+      label: "Terminal 01",
+      connector: "CCS2",
+      powerKw: 120,
+      status: "AVAILABLE",
+      stationId: stationCuritiba.id,
+    },
+    create: {
+      id: "seed-charger-curitiba-ccs2",
+      label: "Terminal 01",
+      connector: "CCS2",
+      powerKw: 120,
+      status: "AVAILABLE",
+      stationId: stationCuritiba.id,
+    },
+  });
+
+  console.log("Seed concluído com sucesso.");
+  console.log({
+    admin: admin.email,
+    driver: driver.email,
+  });
 }
 
 main()
   .catch((error) => {
-    console.error("Erro no seed:", error);
+    console.error("Erro ao executar seed:", error);
     process.exit(1);
   })
   .finally(async () => {
     await prisma.$disconnect();
+    await pool.end();
   });

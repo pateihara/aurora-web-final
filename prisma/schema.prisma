@@ -53,9 +53,9 @@ model User {
 
 model Vehicle {
   id                    String        @id @default(cuid())
-  nickname              String
+  nickname              String        @default("Meu veículo")
   model                 String
-  plate                 String
+  plate                 String        @default("ABC1D23")
   type                  VehicleType   @default(EV)
   connector             ConnectorType
   rangeKm               Int
@@ -108,7 +108,7 @@ model Charger {
 }
 
 model Review {
-  id                String  @id @default(cuid())
+  id                String   @id @default(cuid())
   rating            Int
   feeling           String?
   comment           String?
@@ -116,7 +116,7 @@ model Review {
   qualityScore      Int
   amenitiesScore    Int
   signageScore      Int
-  sparksEarned      Int     @default(30)
+  sparksEarned      Int      @default(30)
 
   userId    String
   stationId String

@@ -1,4 +1,4 @@
-//src/app/api/auth/me/route.ts
+// src/app/api/auth/me/route.ts
 import { getTokenFromHeader, verifyToken } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { error, success } from "@/lib/responses";
@@ -22,10 +22,14 @@ export async function GET(request: Request) {
         name: true,
         email: true,
         role: true,
-        createdAt: true,
-        vehicles: true,
         sparks: true,
         reviewsCount: true,
+        createdAt: true,
+        vehicles: {
+          orderBy: {
+            createdAt: "desc",
+          },
+        },
       },
     });
 

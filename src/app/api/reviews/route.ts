@@ -173,7 +173,7 @@ export async function POST(request: Request) {
       };
     });
 
-    return success(result, 201);
+    return success(result);
   } catch (err) {
     console.error(err);
     return error("Erro ao enviar avaliação.", 500);
