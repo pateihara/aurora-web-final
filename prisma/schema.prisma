@@ -12,6 +12,11 @@ enum UserRole {
   ADMIN
 }
 
+enum VehicleType {
+  EV
+  HYBRID
+}
+
 enum ChargerStatus {
   AVAILABLE
   OCCUPIED
@@ -28,11 +33,15 @@ enum ConnectorType {
 }
 
 model User {
-  id        String   @id @default(cuid())
-  name      String
-  email     String   @unique
-  password  String
-  role      UserRole @default(DRIVER)
+  id       String   @id @default(cuid())
+  name     String
+  email    String   @unique
+  password String
+  role     UserRole @default(DRIVER)
+
+  sparks       Int @default(0)
+  reviewsCount Int @default(0)
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -43,16 +52,25 @@ model User {
 }
 
 model Vehicle {
-  id         String        @id @default(cuid())
-  model      String
-  connector  ConnectorType
-  rangeKm    Int
-  maxPowerKw Int
-  userId     String
-  createdAt  DateTime      @default(now())
-  updatedAt  DateTime      @updatedAt
+  id                    String        @id @default(cuid())
+  nickname              String
+  model                 String
+  plate                 String
+  type                  VehicleType   @default(EV)
+  connector             ConnectorType
+  rangeKm               Int
+  maxPowerKw            Int
+  currentBatteryPercent Int           @default(80)
+  fuelBackup            Boolean       @default(false)
+  isActive              Boolean       @default(false)
+
+  userId    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
 }
 
 model Station {
@@ -85,22 +103,30 @@ model Charger {
   updatedAt DateTime      @updatedAt
 
   station Station @relation(fields: [stationId], references: [id], onDelete: Cascade)
+
+  @@index([stationId])
 }
 
 model Review {
-  id                String   @id @default(cuid())
+  id                String  @id @default(cuid())
   rating            Int
+  feeling           String?
   comment           String?
   availabilityScore Int
   qualityScore      Int
   amenitiesScore    Int
   signageScore      Int
-  userId            String
-  stationId         String
-  createdAt         DateTime @default(now())
+  sparksEarned      Int     @default(30)
+
+  userId    String
+  stationId String
+  createdAt DateTime @default(now())
 
   user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
   station Station @relation(fields: [stationId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([stationId])
 }
 
 model Favorite {
@@ -113,6 +139,8 @@ model Favorite {
   station Station @relation(fields: [stationId], references: [id], onDelete: Cascade)
 
   @@unique([userId, stationId])
+  @@index([userId])
+  @@index([stationId])
 }
 
 model ChargingHistory {
@@ -126,4 +154,7 @@ model ChargingHistory {
 
   user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
   station Station @relation(fields: [stationId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([stationId])
 }

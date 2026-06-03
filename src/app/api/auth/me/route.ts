@@ -24,6 +24,8 @@ export async function GET(request: Request) {
         role: true,
         createdAt: true,
         vehicles: true,
+        sparks: true,
+        reviewsCount: true,
       },
     });
 
