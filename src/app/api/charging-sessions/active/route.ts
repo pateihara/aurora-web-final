@@ -23,6 +23,23 @@ export async function GET(request: Request) {
         status: "ACTIVE",
       },
       include: {
+        vehicle: {
+          select: {
+            id: true,
+            nickname: true,
+            brand: true,
+            model: true,
+            year: true,
+            plate: true,
+            type: true,
+            connector: true,
+            batteryCapacityKwh: true,
+            currentBatteryPercent: true,
+            rangeKm: true,
+            maxPowerKw: true,
+            isActive: true,
+          },
+        },
         station: {
           select: {
             id: true,

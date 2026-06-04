@@ -6,6 +6,7 @@ import { error, success } from "@/lib/responses";
 type CreateChargingSessionBody = {
   stationId?: string;
   chargerId?: string;
+  vehicleId?: string;
   selectedMinutes?: number;
   pricePerMinute?: number;
 };
@@ -84,9 +85,39 @@ export async function POST(request: Request) {
         throw new Error("Este terminal não está disponível para uso.");
       }
 
+      const vehicle = body.vehicleId
+        ? await tx.vehicle.findFirst({
+            where: {
+              id: body.vehicleId,
+              userId: payload.userId,
+            },
+          })
+        : await tx.vehicle.findFirst({
+            where: {
+              userId: payload.userId,
+              isActive: true,
+            },
+            orderBy: {
+              createdAt: "desc",
+            },
+          });
+
+      if (!vehicle) {
+        throw new Error(
+          "Nenhum veículo encontrado. Cadastre ou selecione um veículo antes de iniciar a recarga.",
+        );
+      }
+
+      if (vehicle.connector !== charger.connector) {
+        throw new Error(
+          `Este terminal usa ${charger.connector}, mas o veículo selecionado usa ${vehicle.connector}. Escolha outro terminal ou outro veículo.`,
+        );
+      }
+
       const session = await tx.chargingSession.create({
         data: {
           userId: payload.userId,
+          vehicleId: vehicle.id,
           stationId: body.stationId as string,
           chargerId: body.chargerId as string,
           selectedMinutes,
@@ -95,6 +126,23 @@ export async function POST(request: Request) {
           status: "ACTIVE",
         },
         include: {
+          vehicle: {
+            select: {
+              id: true,
+              nickname: true,
+              brand: true,
+              model: true,
+              year: true,
+              plate: true,
+              type: true,
+              connector: true,
+              batteryCapacityKwh: true,
+              currentBatteryPercent: true,
+              rangeKm: true,
+              maxPowerKw: true,
+              isActive: true,
+            },
+          },
           station: {
             select: {
               id: true,
