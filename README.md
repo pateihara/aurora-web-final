@@ -1,46 +1,96 @@
-# Aurora by Flui — Plataforma Web Administrativa + API REST · Etapa 3
+# Aurora by Flui — Plataforma Web + API REST + App Mobile
 
-Plataforma web administrativa desenvolvida para a **Etapa 3 do Charge Platform Challenge** — parceria **FIAP, Flui & Google · 2026**.
+Projeto desenvolvido para a **Etapa 3 do Charge Platform Challenge** — parceria **FIAP, Flui & Google · 2026**.
 
-O projeto faz parte do ecossistema **Aurora by Flui**, uma solução voltada à melhoria da experiência de recarga de veículos elétricos e híbridos plug-in no Brasil.
+O **Aurora by Flui** é uma solução digital para melhorar a experiência de motoristas de veículos elétricos e híbridos plug-in na busca, avaliação e uso de pontos de recarga.
 
-Nesta etapa, a plataforma web deixou de ser apenas uma interface simulada e passou a integrar:
+A solução final foi estruturada como um ecossistema full stack integrado, composto por:
 
-- Painel administrativo funcional;
-- Backend próprio com API REST;
-- Banco de dados PostgreSQL no Neon;
-- ORM Prisma;
-- Autenticação por perfil;
-- Gestão real de pontos de recarga, carregadores, usuários, avaliações e relatórios;
-- Deploy web/API planejado para Vercel.
+- **Plataforma Web Administrativa** para a Flui;
+- **API REST própria** em Next.js;
+- **Banco de dados PostgreSQL** hospedado no Neon;
+- **ORM Prisma** com migrations e seed;
+- **App Mobile** em React Native/Expo;
+- **Autenticação JWT** com perfis `ADMIN` e `DRIVER`;
+- **Deploy Web/API** na Vercel;
+- **Preview Mobile Android** via Expo/EAS Update.
+
+---
+
+## Links da entrega
+
+| Item | Link |
+|---|---|
+| Plataforma Web/Admin | https://aurora-web-final.vercel.app/ |
+| API REST base | https://aurora-web-final.vercel.app/api |
+| Mobile Android Preview — EAS Update | https://expo.dev/accounts/eiharap/projects/aurora-mobile/updates/ba696951-c8fa-47eb-b164-684a73293630 |
+| Repositório Web/API | https://github.com/pateihara/aurora-web-final |
+| Repositório Mobile | INSERIR_LINK_DO_REPOSITORIO_MOBILE |
+| Protótipo Mobile | INSERIR_LINK_DO_PROTOTIPO_MOBILE |
+| Protótipo Web/Admin | INSERIR_LINK_DO_PROTOTIPO_WEB |
+| Vídeo Pitch | INSERIR_LINK_DO_VIDEO |
+| Documentação/PDF Final | INSERIR_LINK_DO_PDF_FINAL |
+
+---
+
+## QR Code do Mobile
+
+O app mobile Android pode ser acessado pelo QR Code gerado no Expo/EAS Update.
+
+> Para testar, abra o link do Mobile Preview ou escaneie o QR Code com o **Expo Go** no Android.
+
+Link do update:
+
+```txt
+https://expo.dev/accounts/eiharap/projects/aurora-mobile/updates/ba696951-c8fa-47eb-b164-684a73293630
+```
+
+---
+
+## Usuários de demonstração
+
+### Motorista
+
+```txt
+E-mail: pateihara@gmail.com
+Senha: 123456
+Perfil: DRIVER
+```
+
+### Administrador
+
+```txt
+E-mail: admin@flui.com
+Senha: 123456
+Perfil: ADMIN
+```
 
 ---
 
 ## Sobre o projeto
 
-O **Aurora by Flui** é uma solução digital pensada para apoiar motoristas de veículos elétricos na busca por pontos de recarga mais confiáveis, bem avaliados e adequados ao seu veículo.
+O **Aurora by Flui** foi pensado para apoiar motoristas de veículos elétricos na busca por pontos de recarga mais confiáveis, bem avaliados e adequados ao veículo utilizado.
 
-A proposta do produto é funcionar como um guia inteligente de eletropostos, reunindo informações como:
+A solução permite:
 
-- localização;
-- conectores disponíveis;
-- potência dos carregadores;
-- status operacional;
-- funcionamento 24h;
-- comodidades;
-- avaliações por critério;
-- favoritos;
-- histórico de uso.
-
-Na **Etapa 3**, o foco deste repositório é a **plataforma web administrativa da Flui**, responsável por gerenciar a rede de pontos de recarga e fornecer os endpoints que também serão consumidos pelo app mobile.
+- consultar pontos de recarga;
+- visualizar mapa interativo;
+- filtrar por conectores e disponibilidade;
+- favoritar pontos;
+- avaliar eletropostos;
+- cadastrar veículos elétricos e híbridos plug-in;
+- planejar viagens;
+- iniciar sessões de recarga;
+- acompanhar veículos carregando;
+- administrar pontos, carregadores, avaliações e usuários pelo painel web.
 
 ---
 
 ## Objetivo da Etapa 3
 
-A Etapa 3 representa a entrega final do **Charge Platform Challenge**.
+A Etapa 3 representa a entrega final do Challenge, transformando o projeto em uma solução full stack funcional.
 
-O objetivo é transformar o projeto em uma solução full stack integrada, com:
+A entrega contempla:
 
 - app mobile funcional;
 - plataforma web administrativa;
@@ -49,302 +99,298 @@ O objetivo é transformar o projeto em uma solução full stack integrada, com:
 - autenticação diferenciada entre motoristas e administradores;
 - deploy completo;
 - documentação técnica;
-- repositório público no GitHub;
-- vídeo-pitch de apresentação.
-
-Este repositório concentra a parte **web/admin + backend/API + banco de dados**.
+- integração entre mobile, web, API e banco;
+- links públicos para avaliação.
 
 ---
 
-## Escopo deste repositório
+## Arquitetura da solução
 
-Este projeto contém:
-
-- Plataforma web administrativa;
-- API REST em Next.js;
-- Integração com banco PostgreSQL no Neon;
-- Prisma ORM;
-- Autenticação com JWT;
-- Controle de acesso por perfil;
-- Rotas administrativas protegidas;
-- Estrutura de dados para integração com o app mobile.
-
-O app mobile será mantido em projeto separado, consumindo esta mesma API online.
-
----
-
-## Funcionalidades implementadas
-
-### Autenticação
-
-- Cadastro de usuários;
-- Login com e-mail e senha;
-- Geração de token JWT;
-- Perfil de usuário diferenciado:
-  - `DRIVER` para motoristas;
-  - `ADMIN` para administradores da Flui;
-- Proteção de rotas administrativas;
-- Validação de sessão no painel web.
-
-### Painel administrativo
-
-- Tela de login administrativa;
-- Sidebar de navegação;
-- Dashboard com indicadores gerais;
-- Página de pontos de recarga;
-- Página de detalhe e edição de ponto;
-- Página de avaliações;
-- Página de relatórios;
-- Página de usuários/motoristas.
-
-### Gestão de pontos de recarga
-
-- Listagem de pontos cadastrados;
-- Cadastro de novo ponto;
-- Edição de ponto existente;
-- Exclusão de ponto;
-- Geocoding automático por endereço;
-- Atualização automática de latitude e longitude ao alterar endereço;
-- Exibição de:
-  - nome;
-  - endereço;
-  - cidade;
-  - estado;
-  - latitude;
-  - longitude;
-  - funcionamento 24h;
-  - comodidades;
-  - avaliação média;
-  - quantidade de carregadores disponíveis.
-
-### Gestão de carregadores
-
-- Cadastro de carregadores por ponto;
-- Edição de carregadores existentes;
-- Remoção de carregadores;
-- Atualização de status operacional:
-  - Livre;
-  - Ocupado;
-  - Offline;
-  - Manutenção;
-- Controle de:
-  - nome do carregador;
-  - tipo de conector;
-  - potência em kW;
-  - status.
-
-### Avaliações
-
-- Motoristas podem avaliar pontos de recarga;
-- Administradores podem visualizar avaliações no painel;
-- Avaliações com critérios separados:
-  - disponibilidade;
-  - qualidade;
-  - comodidades;
-  - sinalização;
-- Cálculo de nota média;
-- Filtros por avaliações positivas e críticas;
-- Exibição de comentário, usuário, ponto avaliado e data.
-
-### Relatórios
-
-- Indicadores calculados a partir do banco de dados;
-- Quantidade de usuários;
-- Quantidade de pontos cadastrados;
-- Quantidade total de carregadores;
-- Carregadores disponíveis;
-- Carregadores ocupados;
-- Carregadores offline;
-- Avaliação média da rede;
-- Total de avaliações;
-- Total de históricos de recarga;
-- Taxa de disponibilidade da rede;
-- Mensagens executivas condicionais com base nos dados reais.
-
-### Usuários e motoristas
-
-- Listagem de usuários cadastrados;
-- Filtro por perfil:
-  - todos;
-  - motoristas;
-  - administradores;
-- Visualização de:
-  - nome;
-  - e-mail;
-  - perfil;
-  - veículos cadastrados;
-  - avaliações enviadas;
-  - favoritos;
-  - histórico de recargas;
-  - total de kWh;
-  - gasto simulado.
-
-### Dados iniciais
-
-- Seed com dados demonstrativos;
-- Criação automática de:
-  - administrador;
-  - motorista;
-  - veículo;
-  - pontos de recarga;
-  - carregadores;
-  - avaliações;
-  - favoritos;
-  - histórico de recarga.
-
----
-
-## Telas da plataforma web
-
-| # | Tela | Descrição |
-|---|------|-----------|
-| 1 | Login | Acesso administrativo com autenticação JWT |
-| 2 | Dashboard | Métricas gerais da rede, usuários, carregadores, avaliações e disponibilidade |
-| 3 | Pontos de recarga | Tabela com pontos cadastrados, status, conectores e avaliações |
-| 4 | Novo ponto | Cadastro de eletroposto com geocoding automático |
-| 5 | Detalhe do ponto | Edição de dados, endereço, comodidades e localização |
-| 6 | Gestão de carregadores | Cadastro, edição, remoção e atualização de status dos carregadores |
-| 7 | Avaliações | Visualização das avaliações enviadas por motoristas |
-| 8 | Relatórios | Indicadores operacionais calculados com dados do banco |
-| 9 | Usuários | Visualização de motoristas, administradores, veículos, favoritos e histórico |
+```txt
+Aurora by Flui
+│
+├── aurora-web
+│   ├── Plataforma Web Administrativa
+│   ├── API REST em Next.js
+│   ├── Autenticação JWT
+│   ├── Prisma ORM
+│   ├── PostgreSQL Neon
+│   └── Deploy Vercel
+│
+└── aurora-mobile
+    ├── App React Native / Expo
+    ├── Onboarding
+    ├── Login e cadastro
+    ├── Mapa interativo
+    ├── Ficha do ponto
+    ├── Favoritos
+    ├── Avaliações
+    ├── Perfil do motorista
+    ├── Cadastro de veículos
+    ├── Planejamento de viagem
+    ├── Sessões de recarga
+    └── Preview Android via EAS Update
+```
 
 ---
 
 ## Tecnologias utilizadas
 
-### Frontend
+### Web/Admin
 
 - Next.js;
 - React;
 - TypeScript;
 - Tailwind CSS;
 - CSS global;
-- LocalStorage para sessão web.
+- LocalStorage para sessão administrativa;
+- Vercel para deploy.
 
-### Backend
+### Backend/API
 
 - Next.js API Routes;
 - API REST;
 - JWT para autenticação;
 - Bcrypt para criptografia de senha;
-- Controle de acesso por perfil.
+- Controle de acesso por perfil;
+- Prisma ORM;
+- Prisma Migrate.
 
 ### Banco de dados
 
 - PostgreSQL;
 - Neon;
 - Prisma ORM;
-- Prisma Migrate;
 - Prisma Studio;
 - Seed em TypeScript.
 
-### Deploy
+### Mobile
 
-- Vercel para web/admin/API;
-- Neon para banco PostgreSQL online;
-- GitHub como repositório público.
-
----
-
-## Arquitetura da solução
-
-A solução foi estruturada como um ecossistema com separação entre web e mobile.
-
-```txt
-aurora-platform/
-│
-├── aurora-web/
-│   ├── Plataforma web administrativa
-│   ├── API REST
-│   ├── Prisma ORM
-│   ├── Integração com Neon PostgreSQL
-│   └── Deploy na Vercel
-│
-└── aurora-mobile/
-    ├── App mobile em Expo/React Native
-    ├── Mapa interativo
-    ├── Ficha do ponto
-    ├── Avaliações
-    ├── Perfil do motorista
-    └── Consumo da API do aurora-web
-```
-
-Neste repositório, o frontend web e o backend estão no mesmo projeto Next.js, o que simplifica o deploy e permite que a Vercel publique a plataforma administrativa e a API REST juntas.
+- React Native;
+- Expo;
+- Expo Router;
+- TypeScript;
+- React Native Maps;
+- AsyncStorage;
+- EAS Update;
+- Expo Go para preview Android.
 
 ---
 
-## Estrutura do projeto
+## Funcionalidades da Plataforma Web/Admin
 
-```txt
-aurora-web/
-├── prisma/
-│   ├── migrations/
-│   ├── schema.prisma
-│   └── seed.ts
-│
-├── src/
-│   ├── app/
-│   │   ├── admin/
-│   │   │   ├── layout.tsx
-│   │   │   ├── page.tsx
-│   │   │   ├── reports/
-│   │   │   │   └── page.tsx
-│   │   │   ├── reviews/
-│   │   │   │   └── page.tsx
-│   │   │   ├── stations/
-│   │   │   │   ├── page.tsx
-│   │   │   │   ├── new/
-│   │   │   │   │   └── page.tsx
-│   │   │   │   └── [id]/
-│   │   │   │       └── page.tsx
-│   │   │   └── users/
-│   │   │       └── page.tsx
-│   │   │
-│   │   ├── api/
-│   │   │   ├── auth/
-│   │   │   │   ├── login/
-│   │   │   │   ├── me/
-│   │   │   │   └── register/
-│   │   │   ├── chargers/
-│   │   │   │   └── [id]/
-│   │   │   ├── favorites/
-│   │   │   ├── geocode/
-│   │   │   ├── reports/
-│   │   │   │   └── overview/
-│   │   │   ├── reviews/
-│   │   │   ├── stations/
-│   │   │   │   ├── [id]/
-│   │   │   │   │   ├── chargers/
-│   │   │   │   │   └── reviews/
-│   │   │   │   └── route.ts
-│   │   │   ├── users/
-│   │   │   └── vehicles/
-│   │   │
-│   │   ├── globals.css
-│   │   ├── layout.tsx
-│   │   ├── login/
-│   │   │   └── page.tsx
-│   │   └── page.tsx
-│   │
-│   ├── generated/
-│   │   └── prisma/
-│   │
-│   └── lib/
-│       ├── auth.ts
-│       ├── prisma.ts
-│       └── responses.ts
-│
-├── .env
-├── package.json
-├── prisma.config.ts
-└── README.md
-```
+### Autenticação administrativa
+
+- Login com e-mail e senha;
+- Geração de token JWT;
+- Proteção de rotas administrativas;
+- Controle de acesso por perfil `ADMIN`.
+
+### Dashboard
+
+- Indicadores gerais da rede;
+- Quantidade de usuários;
+- Quantidade de pontos cadastrados;
+- Total de carregadores;
+- Carregadores livres, ocupados, offline e em manutenção;
+- Avaliação média da rede;
+- Total de avaliações;
+- Taxa de disponibilidade.
+
+### Gestão de pontos de recarga
+
+- Listagem de pontos;
+- Cadastro de novo ponto;
+- Edição de ponto existente;
+- Exclusão de ponto;
+- Geocoding automático por endereço;
+- Atualização automática de latitude e longitude;
+- Controle de comodidades;
+- Funcionamento 24h;
+- Visualização de carregadores por ponto.
+
+### Gestão de carregadores
+
+- Cadastro de carregadores por ponto;
+- Edição de carregadores;
+- Remoção de carregadores;
+- Atualização de status:
+  - `AVAILABLE`;
+  - `OCCUPIED`;
+  - `OFFLINE`;
+  - `MAINTENANCE`;
+- Controle de conector e potência.
+
+### Avaliações
+
+- Visualização de avaliações enviadas por motoristas;
+- Exibição de usuário, ponto, nota e comentário;
+- Critérios separados:
+  - disponibilidade;
+  - qualidade;
+  - comodidades;
+  - sinalização;
+- Cálculo de nota média.
+
+### Relatórios
+
+- Indicadores dinâmicos calculados pelo banco;
+- Disponibilidade da rede;
+- Quantidade de carregadores por status;
+- Média de avaliações;
+- Volume de usuários;
+- Histórico simulado de recargas.
+
+### Usuários
+
+- Listagem de usuários;
+- Filtro por perfil;
+- Exibição de:
+  - nome;
+  - e-mail;
+  - perfil;
+  - veículos cadastrados;
+  - avaliações;
+  - favoritos;
+  - histórico de recargas.
+
+---
+
+## Funcionalidades do App Mobile
+
+### Onboarding
+
+- Fluxo inicial com múltiplas telas;
+- Apresentação da proposta do Aurora by Flui;
+- Direcionamento final para login ou cadastro;
+- Identidade visual alinhada ao protótipo.
+
+### Autenticação
+
+- Cadastro de motorista;
+- Login com e-mail e senha;
+- Sessão persistida com AsyncStorage;
+- Consumo da API online;
+- Restrição do app mobile para perfil `DRIVER`.
+
+### Mapa
+
+- Mapa interativo com pontos de recarga;
+- Marcadores por disponibilidade;
+- Filtros por:
+  - disponibilidade;
+  - funcionamento 24h;
+  - tipo de conector;
+  - busca por nome, endereço ou cidade;
+- Visualização de pontos onde há veículos do usuário carregando;
+- Lista de todos os veículos em recarga ativa;
+- Acesso rápido ao ponto ou à tela de recarga.
+
+### Ficha do ponto
+
+- Dados completos do eletroposto;
+- Endereço, cidade e estado;
+- Status dos terminais;
+- Tipo de conector;
+- Potência em kW;
+- Comodidades;
+- Botão para abrir rota no Google Maps;
+- Botão para avaliar ponto;
+- Botão para favoritar;
+- Botão para usar terminal;
+- Reportar problema em carregador.
+
+### Favoritos
+
+- Favoritar e remover pontos;
+- Lista de favoritos conectada à API;
+- Atualização dos dados do ponto ao abrir a aba;
+- Exibição de disponibilidade real do ponto;
+- Acesso direto à ficha do ponto.
+
+### Avaliações
+
+- Envio de avaliação para a API;
+- Nota geral;
+- Comentário;
+- Critérios separados;
+- Geração de pontos/sparks ao avaliar;
+- Atualização do perfil após avaliação.
+
+### Perfil
+
+- Dados do usuário conectados à API;
+- Exibição de:
+  - nome;
+  - e-mail;
+  - data de criação da conta;
+  - quantidade de veículos;
+  - sparks;
+  - descontos simulados;
+- Listagem dos veículos cadastrados;
+- Adicionar, editar, ativar e excluir veículos.
+
+### Veículos
+
+- Cadastro de veículos 100% elétricos e híbridos plug-in;
+- Catálogo de veículos com dados técnicos;
+- Dados de:
+  - marca;
+  - modelo;
+  - ano;
+  - apelido;
+  - placa;
+  - tipo;
+  - conector;
+  - bateria;
+  - autonomia;
+  - potência máxima;
+  - bateria atual;
+- Diferenciação entre `EV` e `PHEV`;
+- Validação de veículo ativo;
+- Veículos salvos por usuário na API.
+
+### Planejamento de viagem
+
+- Tela de planejamento de rota;
+- Origem e destino;
+- Rotas de teste;
+- Uso de localização simulada;
+- Seleção do veículo da viagem;
+- Cálculo estimado de:
+  - distância;
+  - duração;
+  - bateria estimada na chegada;
+- Sugestão de pontos compatíveis no trajeto;
+- Abertura de rota no Google Maps.
+
+### Sessões de recarga
+
+- Seleção de terminal;
+- Seleção do veículo que será carregado;
+- Validação de compatibilidade entre conector do veículo e terminal;
+- Pagamento simulado;
+- Liberação simulada do cabo;
+- Confirmação de cabo conectado;
+- Acompanhamento de progresso;
+- Finalização de recarga;
+- Liberação do terminal após finalização.
+
+### Múltiplas recargas
+
+A regra implementada permite:
+
+- um mesmo usuário pagar mais de uma recarga ao mesmo tempo;
+- carregar veículos diferentes em pontos diferentes;
+- impedir que o mesmo veículo seja carregado em dois terminais simultaneamente;
+- exibir todos os veículos em carregamento na tela do mapa;
+- bloquear no mobile e na API a seleção de veículo já em recarga ativa.
 
 ---
 
 ## Modelo de dados
 
-O banco de dados foi modelado com Prisma e PostgreSQL.
+O banco foi modelado com Prisma e PostgreSQL.
 
 ### Principais entidades
 
@@ -355,6 +401,7 @@ O banco de dados foi modelado com Prisma e PostgreSQL.
 - `Review`
 - `Favorite`
 - `ChargingHistory`
+- `ChargingSession`
 
 ### Perfis de usuário
 
@@ -362,6 +409,15 @@ O banco de dados foi modelado com Prisma e PostgreSQL.
 enum UserRole {
   DRIVER
   ADMIN
+}
+```
+
+### Tipos de veículo
+
+```prisma
+enum VehicleType {
+  EV
+  PHEV
 }
 ```
 
@@ -388,6 +444,16 @@ enum ConnectorType {
 }
 ```
 
+### Status de sessão de recarga
+
+```prisma
+enum ChargingSessionStatus {
+  ACTIVE
+  COMPLETED
+  CANCELLED
+}
+```
+
 ---
 
 ## Principais rotas da API
@@ -409,6 +475,9 @@ enum ConnectorType {
 | GET | `/api/stations/[id]` | Busca ponto por ID |
 | PATCH | `/api/stations/[id]` | Atualiza ponto |
 | DELETE | `/api/stations/[id]` | Exclui ponto |
+| GET | `/api/stations/[id]/chargers` | Lista carregadores do ponto |
+| GET | `/api/stations/[id]/reviews` | Lista avaliações do ponto |
+| POST | `/api/stations/[id]/reviews` | Cria avaliação do ponto |
 
 ### Carregadores
 
@@ -417,22 +486,24 @@ enum ConnectorType {
 | POST | `/api/stations/[id]/chargers` | Cria carregador em um ponto |
 | PATCH | `/api/chargers/[id]` | Atualiza carregador |
 | DELETE | `/api/chargers/[id]` | Remove carregador |
+| POST | `/api/chargers/[id]/report-problem` | Reporta problema e marca terminal em manutenção |
 
 ### Avaliações
 
 | Método | Rota | Descrição |
 |---|---|---|
 | GET | `/api/reviews` | Lista avaliações para administradores |
-| GET | `/api/stations/[id]/reviews` | Lista avaliações de um ponto |
-| POST | `/api/stations/[id]/reviews` | Cria avaliação de motorista |
+| POST | `/api/reviews` | Cria avaliação e atribui sparks ao motorista |
 
-### Usuários
+### Usuários e veículos
 
 | Método | Rota | Descrição |
 |---|---|---|
 | GET | `/api/users` | Lista usuários para administradores |
 | GET | `/api/vehicles` | Lista veículos do usuário logado |
 | POST | `/api/vehicles` | Cadastra veículo do motorista |
+| PATCH | `/api/vehicles/[id]` | Atualiza veículo |
+| DELETE | `/api/vehicles/[id]` | Remove veículo |
 
 ### Favoritos
 
@@ -441,6 +512,15 @@ enum ConnectorType {
 | GET | `/api/favorites` | Lista favoritos do usuário |
 | POST | `/api/favorites` | Favorita um ponto |
 | DELETE | `/api/favorites/[stationId]` | Remove favorito |
+
+### Sessões de recarga
+
+| Método | Rota | Descrição |
+|---|---|---|
+| GET | `/api/charging-sessions` | Lista recargas ativas do usuário |
+| POST | `/api/charging-sessions` | Inicia recarga com veículo selecionado |
+| GET | `/api/charging-sessions/active` | Retorna uma recarga ativa mais recente |
+| PATCH | `/api/charging-sessions/[id]/finish` | Finaliza recarga e libera terminal |
 
 ### Relatórios
 
@@ -456,15 +536,102 @@ enum ConnectorType {
 
 ---
 
-## Variáveis de ambiente
+## Estrutura do projeto Web/API
 
-Crie um arquivo `.env` na raiz do projeto:
+```txt
+aurora-web/
+├── prisma/
+│   ├── migrations/
+│   ├── schema.prisma
+│   └── seed.ts
+│
+├── src/
+│   ├── app/
+│   │   ├── admin/
+│   │   │   ├── reports/
+│   │   │   ├── reviews/
+│   │   │   ├── stations/
+│   │   │   └── users/
+│   │   │
+│   │   ├── api/
+│   │   │   ├── auth/
+│   │   │   ├── chargers/
+│   │   │   ├── charging-sessions/
+│   │   │   ├── favorites/
+│   │   │   ├── geocode/
+│   │   │   ├── reports/
+│   │   │   ├── reviews/
+│   │   │   ├── stations/
+│   │   │   ├── users/
+│   │   │   └── vehicles/
+│   │   │
+│   │   ├── login/
+│   │   ├── globals.css
+│   │   ├── layout.tsx
+│   │   └── page.tsx
+│   │
+│   ├── generated/
+│   └── lib/
+│       ├── auth.ts
+│       ├── prisma.ts
+│       └── responses.ts
+│
+├── .env
+├── package.json
+├── prisma.config.ts
+└── README.md
+```
+
+---
+
+## Estrutura do projeto Mobile
+
+```txt
+aurora-mobile/
+├── app/
+│   ├── (tabs)/
+│   │   ├── map.tsx
+│   │   ├── favorites.tsx
+│   │   └── profile.tsx
+│   │
+│   ├── _layout.tsx
+│   ├── index.tsx
+│   ├── login.tsx
+│   ├── register.tsx
+│   ├── onboarding.tsx
+│   ├── station-detail.tsx
+│   ├── review.tsx
+│   ├── vehicle-form.tsx
+│   └── charging-session.tsx
+│
+├── src/
+│   ├── contexts/
+│   │   └── AuthContext.tsx
+│   ├── services/
+│   │   ├── api.ts
+│   │   ├── authService.ts
+│   │   ├── chargingSessionService.ts
+│   │   ├── favoriteService.ts
+│   │   ├── stationService.ts
+│   │   └── vehicleService.ts
+│   ├── theme/
+│   └── types/
+│
+├── .env
+├── app.json
+├── package.json
+└── README.md
+```
+
+---
+
+## Variáveis de ambiente — Web/API
+
+Crie um arquivo `.env` na raiz do projeto web:
 
 ```env
 DATABASE_URL="postgresql://usuario:senha@host-pooler.neon.tech/neondb?sslmode=require&channel_binding=require"
-
 DIRECT_URL="postgresql://usuario:senha@host.neon.tech/neondb?sslmode=require&channel_binding=require"
-
 JWT_SECRET="sua_chave_secreta"
 ```
 
@@ -483,7 +650,17 @@ A `DIRECT_URL` é usada pelo Prisma Migrate.
 
 ---
 
-## Como rodar localmente
+## Variáveis de ambiente — Mobile
+
+Crie um arquivo `.env` na raiz do projeto mobile:
+
+```env
+EXPO_PUBLIC_API_URL=https://aurora-web-final.vercel.app/api
+```
+
+---
+
+## Como rodar o Web/API localmente
 
 Clone o repositório:
 
@@ -503,7 +680,7 @@ Instale as dependências:
 npm install
 ```
 
-Configure o `.env` com as variáveis do Neon.
+Configure o `.env`.
 
 Execute as migrations:
 
@@ -517,10 +694,10 @@ Gere o Prisma Client:
 npx prisma generate
 ```
 
-Rode o seed inicial:
+Rode o seed:
 
 ```bash
-npm run seed
+npx tsx prisma/seed.ts
 ```
 
 Execute o projeto:
@@ -529,7 +706,7 @@ Execute o projeto:
 npm run dev
 ```
 
-Acesse no navegador:
+Acesse:
 
 ```txt
 http://localhost:3000
@@ -537,29 +714,43 @@ http://localhost:3000
 
 ---
 
-## Usuários de demonstração
+## Como rodar o Mobile localmente
 
-Após executar o seed, os seguintes usuários são criados:
+Clone o repositório mobile:
 
-### Administrador
-
-```txt
-E-mail: admin@flui.com
-Senha: admin123
-Perfil: ADMIN
+```bash
+git clone INSERIR_LINK_DO_REPOSITORIO_MOBILE
 ```
 
-### Motorista
+Acesse a pasta:
 
-```txt
-E-mail: ana@aurora.com
-Senha: 123456
-Perfil: DRIVER
+```bash
+cd aurora-mobile
 ```
+
+Instale as dependências:
+
+```bash
+npm install
+```
+
+Configure o `.env`:
+
+```env
+EXPO_PUBLIC_API_URL=https://aurora-web-final.vercel.app/api
+```
+
+Execute o app:
+
+```bash
+npx expo start --clear
+```
+
+Abra com o **Expo Go** no Android.
 
 ---
 
-## Scripts disponíveis
+## Scripts úteis — Web/API
 
 ```bash
 npm run dev
@@ -580,50 +771,76 @@ npm start
 Executa a versão de produção localmente.
 
 ```bash
-npm run seed
+npx prisma migrate dev
 ```
 
-Limpa e recria dados iniciais de demonstração no banco.
+Cria e aplica migrations localmente.
+
+```bash
+npx prisma migrate deploy
+```
+
+Aplica migrations em ambiente de produção.
+
+```bash
+npx prisma generate
+```
+
+Gera o Prisma Client.
+
+```bash
+npx tsx prisma/seed.ts
+```
+
+Executa o seed de dados demonstrativos.
 
 ---
 
-## Build de produção
-
-Para gerar a versão de produção:
+## Scripts úteis — Mobile
 
 ```bash
-npm run build
+npx expo start --clear
 ```
 
-O build executa:
+Inicia o app limpando cache.
 
 ```bash
-prisma generate && next build
+eas update --branch preview --message "Entrega final Aurora Mobile" --platform android
 ```
 
-Durante os testes locais, o build foi concluído com sucesso, incluindo:
+Publica update Android via EAS Update.
 
-- geração do Prisma Client;
-- compilação do Next.js;
-- validação TypeScript;
-- geração das páginas;
-- reconhecimento das rotas estáticas e dinâmicas.
+```bash
+eas whoami
+```
+
+Verifica usuário logado no EAS.
+
+```bash
+eas login
+```
+
+Realiza login no EAS.
 
 ---
 
 ## Deploy
 
-A plataforma web/API deve ser publicada na Vercel.
+### Web/API
 
-### Configuração recomendada na Vercel
+A plataforma web e a API estão publicadas na Vercel:
 
-Build command:
+```txt
+https://aurora-web-final.vercel.app/
+```
+
+Build command recomendado na Vercel:
 
 ```bash
 npx prisma migrate deploy && npm run build
 ```
 
-Variáveis de ambiente:
+Variáveis de ambiente necessárias na Vercel:
 
 ```env
 DATABASE_URL="sua_url_pooled_do_neon"
@@ -631,109 +848,112 @@ DIRECT_URL="sua_url_direta_do_neon"
 JWT_SECRET="sua_chave_secreta"
 ```
 
-Após o deploy, a aplicação deverá expor:
+### Mobile
+
+O app Android foi publicado via EAS Update:
 
 ```txt
-https://sua-url-vercel.vercel.app/login
-https://sua-url-vercel.vercel.app/admin
-https://sua-url-vercel.vercel.app/api/stations
+https://expo.dev/accounts/eiharap/projects/aurora-mobile/updates/ba696951-c8fa-47eb-b164-684a73293630
+```
+
+Branch:
+
+```txt
+preview
+```
+
+Runtime version:
+
+```txt
+1.0.0
+```
+
+Platform:
+
+```txt
+android
 ```
 
 ---
 
 ## Dados de demonstração
 
-O projeto possui um seed para popular o banco com dados iniciais de demonstração.
-
-O seed cria:
+O seed cria dados para testar a aplicação:
 
 - administrador;
 - motorista;
-- veículo;
+- veículos;
 - pontos de recarga;
 - carregadores;
 - avaliações;
-- favorito;
-- histórico de recargas.
+- favoritos;
+- histórico de recarga;
+- pontos em São Paulo, Grande São Paulo, Sorocaba e Curitiba.
 
-Esses dados não ficam fixos no frontend. Eles são persistidos no banco PostgreSQL e consumidos pela API.
-
-Portanto, os indicadores do dashboard, relatórios, avaliações e usuários são calculados dinamicamente com base nos dados existentes no banco.
-
----
-
-## Decisões técnicas
-
-### Next.js full stack
-
-O projeto utiliza Next.js tanto para o frontend administrativo quanto para a API REST. Essa decisão reduz a complexidade de deploy e permite publicar web/admin e backend em uma única aplicação na Vercel.
-
-### Separação entre web e mobile
-
-O projeto foi organizado com separação entre:
-
-- `aurora-web`: painel administrativo + API + banco;
-- `aurora-mobile`: aplicativo do motorista.
-
-Essa separação mantém o mobile independente, mas conectado à mesma API.
-
-### Neon PostgreSQL
-
-O Neon foi escolhido para hospedar o banco PostgreSQL online, permitindo persistência real dos dados e integração com o deploy serverless.
-
-### Prisma ORM
-
-O Prisma foi usado para modelagem do banco, migrations, consultas e seed, facilitando a evolução da estrutura de dados.
-
-### Autenticação JWT
-
-A autenticação foi implementada com JWT para permitir consumo tanto pelo painel web quanto futuramente pelo app mobile.
-
-### Geocoding automático
-
-O cadastro e edição dos pontos realizam busca automática de latitude e longitude a partir do endereço, cidade e estado. Isso melhora a experiência administrativa e prepara os dados para o mapa do app mobile.
+Os dados são persistidos no PostgreSQL/Neon e consumidos pela API.
 
 ---
 
 ## Identidade visual
 
-A interface mantém a identidade visual criada para o Aurora by Flui.
-
 | Token | Valor | Uso |
 |---|---|---|
-| `--green` | `#AAFF3E` | Ação primária, status livre e CTAs |
-| `--purple` | `#7C3FCC` | Identidade Flui e elementos de apoio |
-| `--purple-light` | `#B87DFF` | Avaliações, estrelas e destaques secundários |
-| `--amber` | `#FFB23E` | Status parcial ou atenção |
-| `--red` | `#FF5F5F` | Status offline, exclusão ou erro |
-| `--base` | `#0A0A0F` | Fundo principal |
-| `--surface` | `#13131A` | Cards e superfícies |
-| `--card` | `#1C1C28` | Inputs e blocos internos |
+| `green` | `#AAFF3E` | Ação primária, status livre e CTAs |
+| `purple` | `#7C3FCC` | Identidade Flui e elementos de apoio |
+| `purpleLight` | `#B87DFF` | Destaques secundários |
+| `amber` | `#FFB23E` | Atenção, ocupado ou recarga ativa |
+| `red` | `#FF5F5F` | Erro, offline ou exclusão |
+| `base` | `#0A0A0F` | Fundo principal |
+| `surface` | `#13131A` | Cards e superfícies |
+| `card` | `#1C1C28` | Inputs e blocos internos |
 
 ---
 
 ## Testes realizados
 
-Foram testados localmente:
+### Web/API
 
-- criação das tabelas via Prisma Migrate;
-- visualização do banco pelo Prisma Studio;
-- cadastro de usuário;
-- login de administrador;
-- login de motorista;
-- geração de token JWT;
-- criação de ponto de recarga;
-- listagem de pontos;
-- criação de avaliação;
-- visualização de avaliações no painel;
-- cadastro de ponto via painel web;
-- geocoding automático;
-- edição de ponto;
-- atualização de carregadores;
-- criação e remoção de carregadores;
-- relatórios dinâmicos;
-- visualização de usuários;
-- build de produção com `npm run build`.
+- Login de administrador;
+- Login de motorista;
+- Geração e validação de JWT;
+- Cadastro e edição de ponto;
+- Geocoding automático;
+- Cadastro e edição de carregadores;
+- Atualização de status de carregadores;
+- Visualização de avaliações;
+- Relatórios administrativos;
+- Listagem de usuários;
+- Cadastro de veículos;
+- Favoritos;
+- Sessões de recarga;
+- Build de produção com `npm run build`;
+- Deploy na Vercel.
+
+### Mobile
+
+- Onboarding;
+- Cadastro;
+- Login;
+- Mapa;
+- Filtros de mapa;
+- Ficha do ponto;
+- Favoritar e remover favorito;
+- Atualização correta de favoritos pela API;
+- Avaliação de ponto;
+- Geração de sparks;
+- Perfil conectado à API;
+- Cadastro e edição de veículos;
+- Catálogo de veículos elétricos e híbridos plug-in;
+- Planejamento de viagem;
+- Seleção de veículo da viagem;
+- Início de recarga;
+- Seleção do veículo carregado;
+- Bloqueio de conector incompatível;
+- Bloqueio de veículo já carregando;
+- Múltiplas recargas simultâneas para veículos diferentes;
+- Exibição de todos os veículos carregando no mapa;
+- Finalização de recarga;
+- Publicação Android via EAS Update.
 
 ---
 
@@ -743,21 +963,64 @@ Foram testados localmente:
 |---|---|
 | Plataforma web administrativa | Concluída |
 | API REST | Concluída |
-| Banco de dados PostgreSQL | Concluído |
+| Banco PostgreSQL Neon | Concluído |
 | Prisma ORM e migrations | Concluído |
 | Autenticação JWT | Concluída |
-| Perfil ADMIN e DRIVER | Concluído |
+| Perfis ADMIN e DRIVER | Concluídos |
 | Gestão de pontos | Concluída |
 | Gestão de carregadores | Concluída |
-| Visualização de avaliações | Concluída |
+| Avaliações | Concluídas |
+| Favoritos | Concluídos |
+| Veículos por usuário | Concluídos |
+| Sparks e descontos simulados | Concluídos |
+| Sessões de recarga | Concluídas |
+| Múltiplas recargas por usuário | Concluídas |
+| Bloqueio de mesmo veículo em duas recargas | Concluído |
+| Planejamento de viagem | Concluído |
+| Mapa com veículos carregando | Concluído |
 | Relatórios administrativos | Concluídos |
-| Tela de usuários | Concluída |
-| Geocoding automático | Concluído |
-| Build local | Concluído |
-| Deploy Vercel | Pendente / inserir link final |
-| Integração com app mobile | Próxima etapa |
-| Vídeo-pitch | Pendente / inserir link final |
-| PDF final | Pendente |
+| Deploy Web/API Vercel | Concluído |
+| Mobile Preview Android EAS | Concluído |
+| README unificado | Concluído |
+| Vídeo-pitch | Inserir link final |
+| PDF final | Inserir link final |
+
+---
+
+## Decisões técnicas
+
+### Next.js full stack
+
+O projeto web utiliza Next.js tanto para o painel administrativo quanto para a API REST. Isso simplifica o deploy, pois a Vercel publica web/admin e backend juntos.
+
+### Separação entre Web e Mobile
+
+O projeto foi separado em dois repositórios:
+
+- `aurora-web`: painel administrativo, API e banco;
+- `aurora-mobile`: aplicativo do motorista.
+
+Essa separação mantém o app mobile independente, mas conectado à API online.
+
+### Neon PostgreSQL
+
+O Neon foi escolhido para hospedar o banco PostgreSQL online, permitindo persistência real dos dados e integração com o deploy serverless.
+
+### Prisma ORM
+
+O Prisma foi usado para modelagem do banco, migrations, consultas e seed.
+
+### JWT
+
+A autenticação com JWT permite que o mesmo backend seja consumido pelo painel web e pelo app mobile.
+
+### EAS Update
+
+O EAS Update foi usado para publicar uma versão Android de preview do app mobile, permitindo acesso gratuito para testes via Expo.
+
+### Múltiplas recargas
+
+A solução permite que um motorista pague mais de uma recarga ao mesmo tempo, desde que cada recarga esteja associada a um veículo diferente. Essa decisão representa um caso de uso real, como um usuário pagando a recarga do próprio carro e também do carro de um familiar.
 
 ---
 
@@ -771,11 +1034,8 @@ Foram testados localmente:
 
 ---
 
-## Links
+## Observações finais
 
-| Item | Link |
-|---|---|
-| Deploy web | Inserir link da Vercel |
-| Repositório GitHub | https://github.com/pateihara/aurora-web-final |
-| Vídeo-pitch | Inserir link do vídeo |
-| App mobile | Inserir link do repositório/deploy quando finalizado |
+O Aurora by Flui evoluiu de uma proposta conceitual para uma solução full stack integrada, com app mobile, painel administrativo, API REST, banco de dados online, autenticação, deploy e fluxos reais de uso.
+
+A solução demonstra como a tecnologia pode apoiar a expansão da mobilidade elétrica no Brasil, oferecendo mais confiança, transparência e praticidade para motoristas e administradores de redes de recarga.
