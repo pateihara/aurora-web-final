@@ -59,19 +59,19 @@ model User {
 }
 
 model Vehicle {
-  id                    String        @id @default(cuid())
-  nickname              String        @default("Meu veículo")
-  brand                 String        @default("Outro")
+  id                    String      @id @default(cuid())
+  nickname              String      @default("Meu veículo")
+  brand                 String      @default("Outro")
   model                 String
-  year                  String        @default("2023")
-  plate                 String        @default("ABC1D23")
-  type                  VehicleType   @default(EV)
+  year                  String      @default("2023")
+  plate                 String      @default("ABC1D23")
+  type                  VehicleType @default(EV)
   connector             ConnectorType
-  batteryCapacityKwh    Float         @default(75)
+  batteryCapacityKwh    Float       @default(75)
   rangeKm               Int
   maxPowerKw            Int
-  currentBatteryPercent Int           @default(80)
-  isActive              Boolean       @default(false)
+  currentBatteryPercent Int         @default(80)
+  isActive              Boolean     @default(false)
 
   userId    String
   createdAt DateTime @default(now())
