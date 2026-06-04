@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "Vehicle" ADD COLUMN     "batteryCapacityKwh" DOUBLE PRECISION NOT NULL DEFAULT 75,
+ADD COLUMN     "year" TEXT NOT NULL DEFAULT '2023';

@@ -62,9 +62,11 @@ model Vehicle {
   id                    String        @id @default(cuid())
   nickname              String        @default("Meu veículo")
   model                 String
+  year                  String        @default("2023")
   plate                 String        @default("ABC1D23")
   type                  VehicleType   @default(EV)
   connector             ConnectorType
+  batteryCapacityKwh    Float         @default(75)
   rangeKm               Int
   maxPowerKw            Int
   currentBatteryPercent Int           @default(80)

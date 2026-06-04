@@ -1,7 +1,27 @@
-//src/app/api/vehicles/route.ts
+// src/app/api/vehicles/route.ts
 import { getTokenFromHeader, verifyToken } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { error, success } from "@/lib/responses";
+
+type VehicleBody = {
+  nickname?: string;
+  model?: string;
+  year?: string;
+  plate?: string;
+  type?: "EV" | "HYBRID";
+  connector?: "CCS2" | "CHADEMO" | "TYPE2" | "AC" | "GBT";
+  batteryCapacityKwh?: number;
+  currentBatteryPercent?: number;
+  rangeKm?: number;
+  maxPowerKw?: number;
+  fuelBackup?: boolean;
+  isActive?: boolean;
+};
+
+function toNumber(value: unknown, fallback: number) {
+  const parsed = Number(value);
+  return Number.isNaN(parsed) ? fallback : parsed;
+}
 
 export async function GET(request: Request) {
   try {
@@ -17,9 +37,14 @@ export async function GET(request: Request) {
       where: {
         userId: payload.userId,
       },
-      orderBy: {
-        createdAt: "desc",
-      },
+      orderBy: [
+        {
+          isActive: "desc",
+        },
+        {
+          createdAt: "desc",
+        },
+      ],
     });
 
     return success(vehicles);
@@ -43,22 +68,65 @@ export async function POST(request: Request) {
       return error("Apenas motoristas podem cadastrar veículos.", 403);
     }
 
-    const body = await request.json();
+    const body = (await request.json()) as VehicleBody;
 
-    const { model, connector, rangeKm, maxPowerKw } = body;
+    const nickname = body.nickname?.trim() || "Meu veículo";
+    const model = body.model?.trim();
+    const year = body.year?.trim() || "2023";
+    const plate = body.plate?.trim().toUpperCase().replace(/\s/g, "");
+    const type = body.type ?? "EV";
+    const connector = body.connector;
+    const batteryCapacityKwh = toNumber(body.batteryCapacityKwh, 75);
+    const currentBatteryPercent = Math.min(
+      Math.max(Math.round(toNumber(body.currentBatteryPercent, 80)), 0),
+      100,
+    );
+    const rangeKm = Math.round(toNumber(body.rangeKm, 0));
+    const maxPowerKw = Math.round(toNumber(body.maxPowerKw, 0));
+    const fuelBackup = Boolean(body.fuelBackup);
+    const requestedActive = Boolean(body.isActive);
 
-    if (!model || !connector || !rangeKm || !maxPowerKw) {
+    if (!model || !plate || !connector || rangeKm <= 0 || maxPowerKw <= 0) {
       return error("Dados do veículo incompletos.", 400);
     }
 
-    const vehicle = await prisma.vehicle.create({
-      data: {
-        model,
-        connector,
-        rangeKm,
-        maxPowerKw,
-        userId: payload.userId,
-      },
+    const vehicle = await prisma.$transaction(async (tx) => {
+      const vehiclesCount = await tx.vehicle.count({
+        where: {
+          userId: payload.userId,
+        },
+      });
+
+      const shouldBeActive = requestedActive || vehiclesCount === 0;
+
+      if (shouldBeActive) {
+        await tx.vehicle.updateMany({
+          where: {
+            userId: payload.userId,
+          },
+          data: {
+            isActive: false,
+          },
+        });
+      }
+
+      return tx.vehicle.create({
+        data: {
+          nickname,
+          model,
+          year,
+          plate,
+          type,
+          connector,
+          batteryCapacityKwh,
+          currentBatteryPercent,
+          rangeKm,
+          maxPowerKw,
+          fuelBackup,
+          isActive: shouldBeActive,
+          userId: payload.userId,
+        },
+      });
     });
 
     return success(vehicle, 201);
