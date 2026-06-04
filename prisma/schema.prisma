@@ -14,7 +14,7 @@ enum UserRole {
 
 enum VehicleType {
   EV
-  HYBRID
+  PHEV
 }
 
 enum ChargerStatus {
@@ -61,6 +61,7 @@ model User {
 model Vehicle {
   id                    String        @id @default(cuid())
   nickname              String        @default("Meu veículo")
+  brand                 String        @default("Outro")
   model                 String
   year                  String        @default("2023")
   plate                 String        @default("ABC1D23")
@@ -70,7 +71,6 @@ model Vehicle {
   rangeKm               Int
   maxPowerKw            Int
   currentBatteryPercent Int           @default(80)
-  fuelBackup            Boolean       @default(false)
   isActive              Boolean       @default(false)
 
   userId    String

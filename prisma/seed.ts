@@ -1,9 +1,9 @@
 // prisma/seed.ts
 import "dotenv/config";
 
+import { PrismaPg } from "@prisma/adapter-pg";
 import bcrypt from "bcryptjs";
 import { Pool } from "pg";
-import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "../src/generated/prisma/client";
 
 const connectionString = process.env.DATABASE_URL;
@@ -66,28 +66,32 @@ async function main() {
     },
     update: {
       nickname: "Meu Tesla",
-      model: "Tesla Model 3",
+      brand: "Tesla",
+      model: "Model 3",
+      year: "2023",
       plate: "ABC1D23",
       type: "EV",
       connector: "CCS2",
+      batteryCapacityKwh: 75,
       rangeKm: 350,
       maxPowerKw: 170,
       currentBatteryPercent: 80,
-      fuelBackup: false,
       isActive: true,
       userId: driver.id,
     },
     create: {
       id: "seed-vehicle-tesla",
       nickname: "Meu Tesla",
-      model: "Tesla Model 3",
+      brand: "Tesla",
+      model: "Model 3",
+      year: "2023",
       plate: "ABC1D23",
       type: "EV",
       connector: "CCS2",
+      batteryCapacityKwh: 75,
       rangeKm: 350,
       maxPowerKw: 170,
       currentBatteryPercent: 80,
-      fuelBackup: false,
       isActive: true,
       userId: driver.id,
     },

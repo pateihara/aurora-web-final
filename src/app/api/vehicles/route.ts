@@ -5,16 +5,16 @@ import { error, success } from "@/lib/responses";
 
 type VehicleBody = {
   nickname?: string;
+  brand?: string;
   model?: string;
   year?: string;
   plate?: string;
-  type?: "EV" | "HYBRID";
+  type?: "EV" | "PHEV";
   connector?: "CCS2" | "CHADEMO" | "TYPE2" | "AC" | "GBT";
   batteryCapacityKwh?: number;
   currentBatteryPercent?: number;
   rangeKm?: number;
   maxPowerKw?: number;
-  fuelBackup?: boolean;
   isActive?: boolean;
 };
 
@@ -71,6 +71,7 @@ export async function POST(request: Request) {
     const body = (await request.json()) as VehicleBody;
 
     const nickname = body.nickname?.trim() || "Meu veículo";
+    const brand = body.brand?.trim() || "Outro";
     const model = body.model?.trim();
     const year = body.year?.trim() || "2023";
     const plate = body.plate?.trim().toUpperCase().replace(/\s/g, "");
@@ -83,7 +84,6 @@ export async function POST(request: Request) {
     );
     const rangeKm = Math.round(toNumber(body.rangeKm, 0));
     const maxPowerKw = Math.round(toNumber(body.maxPowerKw, 0));
-    const fuelBackup = Boolean(body.fuelBackup);
     const requestedActive = Boolean(body.isActive);
 
     if (!model || !plate || !connector || rangeKm <= 0 || maxPowerKw <= 0) {
@@ -113,6 +113,7 @@ export async function POST(request: Request) {
       return tx.vehicle.create({
         data: {
           nickname,
+          brand,
           model,
           year,
           plate,
@@ -122,7 +123,6 @@ export async function POST(request: Request) {
           currentBatteryPercent,
           rangeKm,
           maxPowerKw,
-          fuelBackup,
           isActive: shouldBeActive,
           userId: payload.userId,
         },

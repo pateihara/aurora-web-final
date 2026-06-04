@@ -5,16 +5,16 @@ import { error, success } from "@/lib/responses";
 
 type VehicleBody = {
   nickname?: string;
+  brand?: string;
   model?: string;
   year?: string;
   plate?: string;
-  type?: "EV" | "HYBRID";
+  type?: "EV" | "PHEV";
   connector?: "CCS2" | "CHADEMO" | "TYPE2" | "AC" | "GBT";
   batteryCapacityKwh?: number;
   currentBatteryPercent?: number;
   rangeKm?: number;
   maxPowerKw?: number;
-  fuelBackup?: boolean;
   isActive?: boolean;
 };
 
@@ -113,6 +113,7 @@ export async function PATCH(
         },
         data: {
           nickname: body.nickname?.trim() ?? existingVehicle.nickname,
+          brand: body.brand?.trim() ?? existingVehicle.brand,
           model: body.model?.trim() ?? existingVehicle.model,
           year: body.year?.trim() ?? existingVehicle.year,
           plate:
@@ -150,10 +151,6 @@ export async function PATCH(
             body.maxPowerKw !== undefined
               ? Math.round(toNumber(body.maxPowerKw, existingVehicle.maxPowerKw))
               : existingVehicle.maxPowerKw,
-          fuelBackup:
-            body.fuelBackup !== undefined
-              ? Boolean(body.fuelBackup)
-              : existingVehicle.fuelBackup,
           isActive: shouldBeActive ? true : existingVehicle.isActive,
         },
       });
