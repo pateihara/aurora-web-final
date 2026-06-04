@@ -53,18 +53,7 @@ export async function POST(request: Request) {
     const estimatedCost = Number((selectedMinutes * pricePerMinute).toFixed(2));
 
     const result = await prisma.$transaction(async (tx) => {
-      const activeSession = await tx.chargingSession.findFirst({
-        where: {
-          userId: payload.userId,
-          status: "ACTIVE",
-        },
-      });
-
-      if (activeSession) {
-        throw new Error("Você já possui uma recarga ativa.");
-      }
-
-      const charger = await tx.charger.findUnique({
+       const charger = await tx.charger.findUnique({
         where: {
           id: body.chargerId,
         },
