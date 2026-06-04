@@ -25,11 +25,10 @@ A solução final foi estruturada como um ecossistema full stack integrado, comp
 | API REST base | https://aurora-web-final.vercel.app/api |
 | Mobile Android Preview — EAS Update | https://expo.dev/accounts/eiharap/projects/aurora-mobile/updates/ba696951-c8fa-47eb-b164-684a73293630 |
 | Repositório Web/API | https://github.com/pateihara/aurora-web-final |
-| Repositório Mobile | INSERIR_LINK_DO_REPOSITORIO_MOBILE |
-| Protótipo Mobile | INSERIR_LINK_DO_PROTOTIPO_MOBILE |
-| Protótipo Web/Admin | INSERIR_LINK_DO_PROTOTIPO_WEB |
+| Repositório Mobile | https://github.com/pateihara/aurora-mobile-final |
+| Protótipo Mobile | https://nataliaguaita.github.io/aurora-by-flui/app.html |
+| Protótipo Web/Admin | https://nataliaguaita.github.io/aurora-by-flui/web.html |
 | Vídeo Pitch | INSERIR_LINK_DO_VIDEO |
-| Documentação/PDF Final | INSERIR_LINK_DO_PDF_FINAL |
 
 ---
 
@@ -719,7 +718,7 @@ http://localhost:3000
 Clone o repositório mobile:
 
 ```bash
-git clone INSERIR_LINK_DO_REPOSITORIO_MOBILE
+git clone https://github.com/pateihara/aurora-mobile-final
 ```
 
 Acesse a pasta:
