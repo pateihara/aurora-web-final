@@ -21,6 +21,80 @@ function parsePositiveNumber(value: unknown, fallback: number) {
   return parsed;
 }
 
+const vehicleSelect = {
+  id: true,
+  nickname: true,
+  brand: true,
+  model: true,
+  year: true,
+  plate: true,
+  type: true,
+  connector: true,
+  batteryCapacityKwh: true,
+  currentBatteryPercent: true,
+  rangeKm: true,
+  maxPowerKw: true,
+  isActive: true,
+};
+
+const stationSelect = {
+  id: true,
+  name: true,
+  address: true,
+  city: true,
+  state: true,
+};
+
+const chargerSelect = {
+  id: true,
+  label: true,
+  connector: true,
+  powerKw: true,
+  status: true,
+};
+
+export async function GET(request: Request) {
+  try {
+    const token = getTokenFromHeader(request);
+
+    if (!token) {
+      return error("Token não enviado.", 401);
+    }
+
+    const payload = verifyToken(token);
+
+    if (payload.role !== "DRIVER") {
+      return error("Apenas motoristas podem consultar recargas.", 403);
+    }
+
+    const sessions = await prisma.chargingSession.findMany({
+      where: {
+        userId: payload.userId,
+        status: "ACTIVE",
+      },
+      include: {
+        vehicle: {
+          select: vehicleSelect,
+        },
+        station: {
+          select: stationSelect,
+        },
+        charger: {
+          select: chargerSelect,
+        },
+      },
+      orderBy: {
+        startedAt: "desc",
+      },
+    });
+
+    return success(sessions);
+  } catch (err) {
+    console.error(err);
+    return error("Erro ao buscar recargas.", 500);
+  }
+}
+
 export async function POST(request: Request) {
   try {
     const token = getTokenFromHeader(request);
@@ -45,6 +119,10 @@ export async function POST(request: Request) {
       return error("Terminal não informado.", 400);
     }
 
+    const stationId = body.stationId;
+    const chargerId = body.chargerId;
+    const vehicleId = body.vehicleId;
+
     const selectedMinutes = Math.round(
       parsePositiveNumber(body.selectedMinutes, 60),
     );
@@ -53,9 +131,9 @@ export async function POST(request: Request) {
     const estimatedCost = Number((selectedMinutes * pricePerMinute).toFixed(2));
 
     const result = await prisma.$transaction(async (tx) => {
-       const charger = await tx.charger.findUnique({
+      const charger = await tx.charger.findUnique({
         where: {
-          id: body.chargerId,
+          id: chargerId,
         },
         include: {
           station: true,
@@ -66,7 +144,7 @@ export async function POST(request: Request) {
         throw new Error("Terminal não encontrado.");
       }
 
-      if (charger.stationId !== body.stationId) {
+      if (charger.stationId !== stationId) {
         throw new Error("Terminal não pertence ao ponto selecionado.");
       }
 
@@ -74,10 +152,10 @@ export async function POST(request: Request) {
         throw new Error("Este terminal não está disponível para uso.");
       }
 
-      const vehicle = body.vehicleId
+      const vehicle = vehicleId
         ? await tx.vehicle.findFirst({
             where: {
-              id: body.vehicleId,
+              id: vehicleId,
               userId: payload.userId,
             },
           })
@@ -97,6 +175,27 @@ export async function POST(request: Request) {
         );
       }
 
+      const activeVehicleSession = await tx.chargingSession.findFirst({
+        where: {
+          userId: payload.userId,
+          vehicleId: vehicle.id,
+          status: "ACTIVE",
+        },
+        include: {
+          station: {
+            select: {
+              name: true,
+            },
+          },
+        },
+      });
+
+      if (activeVehicleSession) {
+        throw new Error(
+          `Este veículo já está carregando em ${activeVehicleSession.station.name}. Escolha outro veículo.`,
+        );
+      }
+
       if (vehicle.connector !== charger.connector) {
         throw new Error(
           `Este terminal usa ${charger.connector}, mas o veículo selecionado usa ${vehicle.connector}. Escolha outro terminal ou outro veículo.`,
@@ -107,8 +206,8 @@ export async function POST(request: Request) {
         data: {
           userId: payload.userId,
           vehicleId: vehicle.id,
-          stationId: body.stationId as string,
-          chargerId: body.chargerId as string,
+          stationId,
+          chargerId,
           selectedMinutes,
           pricePerMinute,
           estimatedCost,
@@ -116,46 +215,20 @@ export async function POST(request: Request) {
         },
         include: {
           vehicle: {
-            select: {
-              id: true,
-              nickname: true,
-              brand: true,
-              model: true,
-              year: true,
-              plate: true,
-              type: true,
-              connector: true,
-              batteryCapacityKwh: true,
-              currentBatteryPercent: true,
-              rangeKm: true,
-              maxPowerKw: true,
-              isActive: true,
-            },
+            select: vehicleSelect,
           },
           station: {
-            select: {
-              id: true,
-              name: true,
-              address: true,
-              city: true,
-              state: true,
-            },
+            select: stationSelect,
           },
           charger: {
-            select: {
-              id: true,
-              label: true,
-              connector: true,
-              powerKw: true,
-              status: true,
-            },
+            select: chargerSelect,
           },
         },
       });
 
       await tx.charger.update({
         where: {
-          id: body.chargerId,
+          id: chargerId,
         },
         data: {
           status: "OCCUPIED",
