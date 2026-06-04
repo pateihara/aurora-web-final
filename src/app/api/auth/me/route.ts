@@ -4,15 +4,25 @@ import { prisma } from "@/lib/prisma";
 import { error, success } from "@/lib/responses";
 
 export async function GET(request: Request) {
+  const token = getTokenFromHeader(request);
+
+  if (!token) {
+    return error("Token não enviado.", 401);
+  }
+
+  let payload: {
+    userId: string;
+    role: "DRIVER" | "ADMIN";
+  };
+
   try {
-    const token = getTokenFromHeader(request);
+    payload = verifyToken(token);
+  } catch (err) {
+    console.error("Erro ao validar token:", err);
+    return error("Token inválido.", 401);
+  }
 
-    if (!token) {
-      return error("Token não enviado.", 401);
-    }
-
-    const payload = verifyToken(token);
-
+  try {
     const user = await prisma.user.findUnique({
       where: {
         id: payload.userId,
@@ -25,11 +35,6 @@ export async function GET(request: Request) {
         sparks: true,
         reviewsCount: true,
         createdAt: true,
-        vehicles: {
-          orderBy: {
-            createdAt: "desc",
-          },
-        },
       },
     });
 
@@ -39,7 +44,7 @@ export async function GET(request: Request) {
 
     return success(user);
   } catch (err) {
-    console.error(err);
-    return error("Token inválido.", 401);
+    console.error("Erro ao buscar usuário no /auth/me:", err);
+    return error("Erro ao buscar usuário.", 500);
   }
 }
